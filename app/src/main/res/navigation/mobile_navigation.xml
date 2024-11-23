@@ -5,6 +5,19 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+    <!-- Main bar fragments -->
+    <fragment
+        android:id="@+id/nav_healthcare"
+        android:name="com.example.pandouland.ui.healthcare.HealthcareFragment"
+        android:label="Healthcare"
+        tools:layout="@layout/fragment_healthcare" />
+
+    <fragment
+        android:id="@+id/nav_game"
+        android:name="com.example.pandouland.ui.game.GameFragment"
+        android:label="Game"
+        tools:layout="@layout/fragment_game" />
+
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.pandouland.ui.home.HomeFragment"
@@ -12,9 +25,24 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_calendar"
+        android:name="com.example.pandouland.ui.calendar.CalendarFragment"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/nav_budget"
+        android:name="com.example.pandouland.ui.budget.BudgetFragment"
+        android:label="Budget"
+        tools:layout="@layout/fragment_budget" />
+
+
+
+   <!-- Drawer fragments -->
+    <fragment
+        android:id="@+id/nav_shop"
         android:name="com.example.pandouland.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:label="Shop"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
@@ -22,4 +50,6 @@
         android:name="com.example.pandouland.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+
 </navigation>
