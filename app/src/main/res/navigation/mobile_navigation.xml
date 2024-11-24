@@ -51,5 +51,11 @@
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
+    <fragment
+        android:id="@+id/nav_skin"
+        android:name="com.example.pandouland.ui.game.SkinFragment"
+        android:label="Skin"
+        tools:layout="@layout/fragment_skin" />
+
 
 </navigation>

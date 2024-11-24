@@ -14,10 +14,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,14 +30,16 @@ import com.example.pandouland.GameActivity;
 import com.example.pandouland.MainActivity;
 import com.example.pandouland.R;
 import com.example.pandouland.databinding.FragmentGameBinding;
-import com.example.pandouland.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class GameFragment extends Fragment {
     // bind
     private FragmentGameBinding binding;
+
+    private SharedPreferences sharedPrefBackground;
 
     // Video game
     public static final int GAME_REQUEST_CODE = 1;
@@ -64,6 +71,7 @@ public class GameFragment extends Fragment {
     private ProgressBar hungerBar, happinessBar, energyBar;
     private TextView statusText;
     private ImageView pandaImage;
+    private ImageView backgroundImage;
     private Button playButton, sleepButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,9 +80,6 @@ public class GameFragment extends Fragment {
         binding = FragmentGameBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // TO DELETE
-        //final TextView textView = binding.textHome;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         // Initialisation de l'inventaire avec quelques fruits
         inventory = new HashMap<>();
@@ -89,10 +94,12 @@ public class GameFragment extends Fragment {
         energyBar = root.findViewById(R.id.energyBar);
         statusText = root.findViewById(R.id.statusText);
         pandaImage = root.findViewById(R.id.pandaImage);
+        backgroundImage = root.findViewById(R.id.backgroundImage);
         ImageView inventoryButton = root.findViewById(R.id.inventoryButton);
         playButton = root.findViewById(R.id.playButton);
         sleepButton = root.findViewById(R.id.sleepButton);
 
+        // Démarrer le cycle du panda roux
         // Démarrer le cycle du panda roux
         startPandaLifeCycle();
 
@@ -147,6 +154,14 @@ public class GameFragment extends Fragment {
 
         // Afficher le nombre de Pandou Coins depuis MainActivity
         displayPandouCoins();
+
+        // Récupérer les SharedPreferences
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
+        int selectedSkin = sharedPreferences.getInt("SELECTED_SKIN", R.drawable.background_minecraft); // Par défaut, Minecraft
+
+        // Appliquer l'image de fond
+        ImageView backgroundImage = root.findViewById(R.id.backgroundImage);
+        backgroundImage.setImageResource(selectedSkin);
 
         return root;
     }

@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandouland.R;
 import com.example.pandouland.MainActivity;
-import com.example.pandouland.ui.gallery.ShopAdapter;
-import com.example.pandouland.ui.gallery.ShopItem;
 
 import java.util.ArrayList;
 import java.util.List;

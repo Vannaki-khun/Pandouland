@@ -4,13 +4,13 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.pandouland.ui.game.GameFragment;
-import com.example.pandouland.ui.FragmentAdapter;
 import com.example.pandouland.databinding.ActivityMainBinding;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -60,36 +60,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // --------- Bottom Navigation View ---------
-
-        /*bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
-            int itemId = item.getItemId();
-
-            if (itemId == R.id.nav_home) {
-                selectedFragment = new HomeFragment();
-            } else if (itemId == R.id.nav_game) {
-                selectedFragment = new GalleryFragment();
-            } else if (itemId == R.id.nav_calendar) {
-                selectedFragment = new CalendarFragment();
-            } /*else if (itemId == R.id.nav_Healthcare) {
-                selectedFragment = new ProfileFragment();
-            } else if (itemId == R.id.nav_settings) {
-                selectedFragment = new SettingsFragment();
-            }
-            if (selectedFragment != null) {
-                loadFragment(selectedFragment);
-            }
-            return true;
-        });*/
-
         // Configuration du DrawerLayout
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView; // Passing each menu ID as a set of Ids because each
 
         // Configuration de l'AppBarConfiguration                                                 // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_shop, R.id.nav_slideshow,
+                R.id.nav_home, R.id.nav_shop, R.id.nav_skin,
                 R.id.nav_calendar, R.id.nav_game, R.id.nav_healthcare, R.id.nav_budget)
                 .setOpenableLayout(drawer)
                 .build();
@@ -145,20 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-
-    private void clearBackStack() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        while (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStackImmediate();
-        }
-    }
-
-
-    private void setupViewPager() {
-        FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
-        AlertDialog.Builder viewPager;
-        //viewPager.setAdapter(fragmentAdapter);
-    }
 
     // Méthode pour mettre à jour l'affichage des coins
     private void updatePandouCoinsDisplay() {
