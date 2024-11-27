@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- GameView personnalisé prenant tout l'écran -->
+    <com.example.pandouland.ui.game.JumpGame.GameView2
+        android:id="@+id/game_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Ajout d'un bouton pour quitter ou effectuer une action -->
+    <Button
+        android:id="@+id/exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quitter"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+</FrameLayout>

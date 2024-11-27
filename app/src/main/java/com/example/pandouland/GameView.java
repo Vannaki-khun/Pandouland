@@ -1,5 +1,7 @@
 package com.example.pandouland;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,15 +9,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+    private MainActivity mainActivity;
+
     // Variable du jeu
     private GameThread thread;
     private Pandou Pandou;
@@ -24,7 +31,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int score;
     private long gameTime;
     private boolean gameOver;  // Variable pour savoir si le jeu est terminé
-
 
     private Paint endGamePaint;  // Pour dessiner le texte de fin
     private Paint scorePaint;
@@ -40,11 +46,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private static final int FRUIT_INTERVAL = 2000; // Intervalle de 2000ms (2 secondes)
     private static final int GAME_DURATION = 30000; // Durée totale du jeu en millisecondes
 
-    private Paint timerPaint; // Pour dessiner le cercle du timer
+    private Paint timerTextPaint; // Peinture pour le texte du timer
     private RectF timerRect; // Pour délimiter le cadre du cercle
 
     public GameView(Context context) {
         super(context);
+
+        // Vérifiez si le contexte est une instance de MainActivity
+        if (context instanceof MainActivity) {
+            this.mainActivity = (MainActivity) context;
+        }
+
         getHolder().addCallback(this);
         thread = new GameThread(getHolder(), this);
         score = 0;
@@ -56,11 +68,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         scorePaint.setTextSize(60);
         scorePaint.setColor(0xFFFFFFFF); // Blanc
 
-        // Initialisation de la peinture pour le timer circulaire
-        timerPaint = new Paint();
-        timerPaint.setColor(0xFFFF0000); // Rouge
-        timerPaint.setStyle(Paint.Style.STROKE); // Pour dessiner uniquement le contour
-        timerPaint.setStrokeWidth(20); // Largeur de la bordure
+        // Initialisation de la peinture pour le texte du timer
+        timerTextPaint = new Paint();
+        timerTextPaint.setTextSize(60);
+        timerTextPaint.setColor(0xFFFF0000); // Rouge
+        timerTextPaint.setTextAlign(Paint.Align.RIGHT); // Aligné à droite
 
         // Initialisation de la zone où le cercle sera dessiné
         timerRect = new RectF(screenWidth - 300, 50, screenWidth - 50, 300);  // A ajuster si nécessaire
@@ -102,6 +114,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         float buttonHeight = 150;
         buttonRect.set((screenWidth - buttonWidth) / 2, (screenHeight / 2) + 200, (screenWidth + buttonWidth) / 2, (screenHeight / 2) + 200 + buttonHeight);
     }
+
+    // GPT
+
+    // Écouteur pour notifier la fin de jeu
+    public interface GameViewListener {
+        void onGameEnd(); // Appelle cette méthode quand le jeu se termine
+    }
+
+    private GameViewListener listener;
+
+    public void setGameViewListener(GameViewListener listener) {
+        this.listener = listener;
+    }
+
+    // GPT END
+
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
@@ -168,6 +196,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void endGame() {
+        if (mainActivity != null) {
+            mainActivity.setPandouCoins(mainActivity.getPandouCoins() + (score/2));
+            // Message pour informer que les coins ont été sauvegardés
+            Toast.makeText(this.getContext(), "Conversion de ton score en PandouCoins !", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this.getContext(), "ptit flop !", Toast.LENGTH_SHORT).show();
+        }
+
+        if (listener != null) {
+            listener.onGameEnd();
+        }
+
         // Retourner le score à l'activité principale
         Intent resultIntent = new Intent();
         resultIntent.putExtra("finalScore", score);
@@ -201,11 +242,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 // Dessine le score
                 canvas.drawText("Score: " + score, 50, 100, scorePaint);
 
-                // Dessiner le timer circulaire
-                long currentTime = System.currentTimeMillis(); //Calculer le temps écoulé
-                long elapsedTime = currentTime - gameTime;
-                float sweepAngle = (elapsedTime / (float) GAME_DURATION) * 360; // Calculer la progression en degrés (0 à 360) pour le cercle
-                canvas.drawArc(timerRect, -90, sweepAngle, true, timerPaint);
+                // Récupération des timing pour l'affichage du compteur
+                long currentTime = System.currentTimeMillis(); // Temps actuel
+                long elapsedTime = currentTime - gameTime; // Temps écoulé
+                long remainingTime = (GAME_DURATION - elapsedTime) / 1000; // Temps restant en secondes
+
+                // Dessiner le temps restant
+                String timerText = "Temps : " + Math.max(remainingTime, 0) + "s";
+                canvas.drawText(timerText, screenWidth - 50, 100, timerTextPaint);
             }
         }
     }

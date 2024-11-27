@@ -159,5 +159,41 @@
                 android:layout_height="wrap_content"
                 android:text="Dormir" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/adminText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mode Démo Beta Test :"
+                android:layout_gravity="center"
+                android:textSize="13sp"
+                android:padding="16dp" />
+            <Button
+                android:id="@+id/AddPandouCoinsButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="4dp"
+                android:textSize="10sp"
+                android:text="Add +10 coins" />
+            <Button
+                android:id="@+id/FullLifeButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="4dp"
+                android:text="Full Life"
+                android:textSize="12sp" />
+            <Button
+                android:id="@+id/NewGameButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="4dp"
+                android:text="Next Game"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
