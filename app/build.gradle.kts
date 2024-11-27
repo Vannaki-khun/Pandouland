@@ -51,4 +51,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation ("androidx.recyclerview:recyclerview:1.3.1")
+    implementation("com.github.prolificinteractive:material-calendarview:1.4.3")
+    implementation("androidx.core:core:1.13.0")
+    implementation("com.android.support:support-compat:27.0.2")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.15.1") // Optionnel pour un meilleur réseau
 }
+

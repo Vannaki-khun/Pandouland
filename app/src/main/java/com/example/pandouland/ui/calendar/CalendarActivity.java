@@ -3,17 +3,14 @@ package com.example.pandouland.ui.calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.example.pandouland.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -24,7 +21,7 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class CalendarFragment extends Fragment {
+public class CalendarActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
     private HashMap<CalendarDay, String> notesMap = new HashMap<>();
@@ -32,40 +29,46 @@ public class CalendarFragment extends Fragment {
     private Button addNoteButton;
     private TextView selectedDateNoteTextView;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_calendar);
 
-        calendarView = rootView.findViewById(R.id.calendarView);
-        addNoteButton = rootView.findViewById(R.id.add_note_button);
-        selectedDateNoteTextView = rootView.findViewById(R.id.selected_date_note_text_view);
+        calendarView = findViewById(R.id.calendarView);
+        addNoteButton = findViewById(R.id.add_note_button);
+        selectedDateNoteTextView = findViewById(R.id.selected_date_note_text_view);
 
+        // Configure the calendar
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE);
+
+        // Add the decorator for dates with notes
         calendarView.addDecorator(new NoteDecorator(notedDates, this));
 
+        // Handle date selection
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             if (notesMap.containsKey(date)) {
+                // Display the note for the selected date
                 selectedDateNoteTextView.setText("Note : " + notesMap.get(date));
             } else {
+                // No note for the selected date
                 selectedDateNoteTextView.setText("Aucune note pour cette date.");
             }
         });
 
+        // Button to add a note
         addNoteButton.setOnClickListener(v -> {
             CalendarDay selectedDate = calendarView.getSelectedDate();
             if (selectedDate != null) {
                 showNoteDialog(selectedDate);
             } else {
-                Toast.makeText(getContext(), "Veuillez sélectionner une date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Veuillez sélectionner une date", Toast.LENGTH_SHORT).show();
             }
         });
-
-        return rootView;
     }
 
     private void showNoteDialog(CalendarDay date) {
-        LayoutInflater inflater = LayoutInflater.from(getContext());
+        // Inflate the dialog layout
+        LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_note, null);
 
         TextView dateTextView = dialogView.findViewById(R.id.dateTextView);
@@ -76,7 +79,7 @@ public class CalendarFragment extends Fragment {
         dateTextView.setText("Date : " + date.toString());
         noteEditText.setText(notesMap.getOrDefault(date, ""));
 
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setCancelable(false)
                 .create();
@@ -84,17 +87,17 @@ public class CalendarFragment extends Fragment {
         saveButton.setOnClickListener(v -> {
             String note = noteEditText.getText().toString();
             if (!note.isEmpty()) {
-                notesMap.put(date, note);
-                notedDates.add(date);
-                calendarView.invalidateDecorators();
-                selectedDateNoteTextView.setText("Note : " + note);
-                Toast.makeText(getContext(), "Note enregistrée pour " + date, Toast.LENGTH_SHORT).show();
+                notesMap.put(date, note); // Save the note
+                notedDates.add(date); // Add the date to the decorated dates
+                calendarView.invalidateDecorators(); // Refresh decorators
+                selectedDateNoteTextView.setText("Note : " + note); // Update the displayed note
+                Toast.makeText(this, "Note enregistrée pour " + date, Toast.LENGTH_SHORT).show();
             } else {
-                notesMap.remove(date);
-                notedDates.remove(date);
-                calendarView.invalidateDecorators();
-                selectedDateNoteTextView.setText("Aucune note pour cette date.");
-                Toast.makeText(getContext(), "Note supprimée pour " + date, Toast.LENGTH_SHORT).show();
+                notesMap.remove(date); // Remove the note if empty
+                notedDates.remove(date); // Remove the date from decorated dates
+                calendarView.invalidateDecorators(); // Refresh decorators
+                selectedDateNoteTextView.setText("Aucune note pour cette date."); // Clear the displayed note
+                Toast.makeText(this, "Note supprimée pour " + date, Toast.LENGTH_SHORT).show();
             }
             dialog.dismiss();
         });
@@ -106,11 +109,11 @@ public class CalendarFragment extends Fragment {
 
     private static class NoteDecorator implements DayViewDecorator {
         private final HashSet<CalendarDay> dates;
-        private final Fragment fragment;
+        private final CalendarActivity calendarActivity;
 
-        public NoteDecorator(HashSet<CalendarDay> dates, Fragment fragment) {
+        public NoteDecorator(HashSet<CalendarDay> dates, CalendarActivity calendarActivity) {
             this.dates = dates;
-            this.fragment = fragment;
+            this.calendarActivity = calendarActivity;
         }
 
         @Override
@@ -120,7 +123,8 @@ public class CalendarFragment extends Fragment {
 
         @Override
         public void decorate(DayViewFacade view) {
-            view.setBackgroundDrawable(ContextCompat.getDrawable(fragment.requireContext(), R.drawable.circle_red));
+            // Use the context from the activity
+            view.setBackgroundDrawable(ContextCompat.getDrawable(calendarActivity, R.drawable.circle_red));
         }
     }
 }
