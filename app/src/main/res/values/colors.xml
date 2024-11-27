@@ -8,4 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange_pandou">#EE7746</color>
+
+    <color name="pink_background">#D9AFA8</color>
+    <color name="medium_seagreen">#3CB371</color>
+    <color name="light_steelblue">#B0C4DE</color>
+    <color name="dark_blue">#000080</color>
+    <color name="gold">#FFD700</color>
+
+    <color name="indigo">#280540</color>
+    <color name="purple">#541689</color>
+    <color name="sienna">#BCA0522D</color>
+    <color name="goldenrod">#DAA520</color>
 </resources>

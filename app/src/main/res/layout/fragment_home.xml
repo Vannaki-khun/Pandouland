@@ -1,17 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:background="@drawable/bckpinkt"
+    android:gravity="center_horizontal"
+    android:padding="140dp">
 
+    <!-- Heure actuelle -->
     <TextView
-        android:id="@+id/text_home"
+        android:id="@+id/timeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Home!"
-        android:textSize="18sp"
-        android:layout_centerInParent="true"
-        android:textColor="@android:color/black" />
+        android:textSize="46sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp"
+        android:text="9:30" />
 
-</RelativeLayout>
+    <!-- Température -->
+    <TextView
+        android:id="@+id/temperatureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:text="18°" />
+
+    <!-- Conditions météo -->
+    <TextView
+        android:id="@+id/weatherTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:text="NUAGEUX" />
+
+    <!-- Nombre de pas -->
+    <TextView
+        android:id="@+id/stepsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp"
+        android:text="Nombre de pas : 0" />
+
+
+
+    <!-- Emote Panda Roux coucou -->
+
+    <ImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="160dp"
+        android:layout_height="180dp"
+        android:src="@drawable/hello"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"
+        />
+
+</LinearLayout>
