@@ -27,9 +27,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pandouland.GameActivity;
+import com.example.pandouland.ui.game.JumpGame.GameJumpActivity;
+import com.example.pandouland.GameView;
 import com.example.pandouland.MainActivity;
 import com.example.pandouland.R;
 import com.example.pandouland.databinding.FragmentGameBinding;
+import com.example.pandouland.ui.game.JumpGame.GameView2;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +47,7 @@ public class GameFragment extends Fragment {
 
     // Video game
     public static final int GAME_REQUEST_CODE = 1;
+    private GameView2 gameView2;
 
     // Economie
     private TextView pandouCoinsText;
@@ -72,7 +77,7 @@ public class GameFragment extends Fragment {
     private TextView statusText;
     private ImageView pandaImage;
     private ImageView backgroundImage;
-    private Button playButton, sleepButton;
+    private Button playButton, sleepButton, AddPandouCoinsButton, FullLifeButton, NewGameButton, exitButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         GameViewModel gameViewModel = new ViewModelProvider(this).get(GameViewModel.class);
@@ -80,6 +85,7 @@ public class GameFragment extends Fragment {
         binding = FragmentGameBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        //qu'gameView2 = (GameView2) root.findViewById(R.id.game_view2);
 
         // Initialisation de l'inventaire avec quelques fruits
         inventory = new HashMap<>();
@@ -98,8 +104,13 @@ public class GameFragment extends Fragment {
         ImageView inventoryButton = root.findViewById(R.id.inventoryButton);
         playButton = root.findViewById(R.id.playButton);
         sleepButton = root.findViewById(R.id.sleepButton);
+        // Mode admin BETA
+        AddPandouCoinsButton = root.findViewById(R.id.AddPandouCoinsButton);
+        FullLifeButton = root.findViewById(R.id.FullLifeButton);
+        NewGameButton = root.findViewById(R.id.NewGameButton);
 
-        // Démarrer le cycle du panda roux
+
+
         // Démarrer le cycle du panda roux
         startPandaLifeCycle();
 
@@ -131,6 +142,34 @@ public class GameFragment extends Fragment {
             }
         });
 
+        AddPandouCoinsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.addPandouCoins(10);
+                displayPandouCoins();
+            }
+        });
+
+        FullLifeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                energy += 100;
+                happiness += 100;
+                hunger += 100;
+                updateUI();
+            }
+        });
+
+        NewGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent FlappyGameintent = new Intent(getActivity(), GameActivity.class);
+                startActivity(FlappyGameintent);
+
+                //startGameJump();
+            }
+        });
+
         // Définir le Runnable pour régénérer l'énergie
         energyRegeneration = new Runnable() {
             @Override
@@ -154,6 +193,9 @@ public class GameFragment extends Fragment {
 
         // Afficher le nombre de Pandou Coins depuis MainActivity
         displayPandouCoins();
+
+        // Récupérer les données sauvegardées
+        loadProgress();
 
         // Récupérer les SharedPreferences
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
@@ -192,14 +234,15 @@ public class GameFragment extends Fragment {
                         statusText.setText("Le panda roux est en bonne forme !");
                     }
 
-                    // Répéter la mise à jour toutes les 10 secondes
-                    handler.postDelayed(this, 15000);
+                    // Répéter la mise à jour toutes les 16 secondes
+                    handler.postDelayed(this, 16000);
                 }
             }
         };
 
         handler.post(pandaRunnable);
     }
+
 
     // Méthode pour afficher le Dialog de l'inventaire
     private void showInventoryDialog() {
@@ -379,9 +422,58 @@ public class GameFragment extends Fragment {
         }
     }
 
+    private void startGameJump() {
+        gameView2.startGame(() -> {
+            // Callback appelé à la fin du jeu
+            if (gameView2.isGameWon()) {
+                mainActivity.addPandouCoins(30);
+                displayPandouCoins();
+
+                Toast.makeText(getContext(), "Bravo ! Vous avez gagné 30 PandouCoins !", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Dommage, réessayez !", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void saveProgress() {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("pandouProgressBar_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Sauvegarder les valeurs actuelles des barres
+        editor.putInt("hunger_level", hunger);
+        editor.putInt("happiness_level", happiness);
+        editor.putInt("energy_level", energy);
+
+        editor.apply();
+    }
+
+    private void loadProgress() {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("pandouProgressBar_prefs", Context.MODE_PRIVATE);
+
+        // Charger les valeurs sauvegardées, ou par défaut à 100
+        hunger = sharedPreferences.getInt("hunger_level", 100);
+        happiness = sharedPreferences.getInt("happiness_level", 100);
+        energy = sharedPreferences.getInt("energy_level", 100);
+
+        // Appliquer les valeurs aux barres
+        updateUI();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Sauvegarder les progressions des barres
+        saveProgress();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+
+        saveProgress();
+        displayPandouCoins();
         getView().requestFocus(); // Récupère le focus pour le fragment
     }
 
@@ -390,5 +482,6 @@ public class GameFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        saveProgress();
     }
 }

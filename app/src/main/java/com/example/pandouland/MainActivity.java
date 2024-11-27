@@ -1,7 +1,9 @@
 package com.example.pandouland;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.RelativeLayout;
@@ -96,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        savePandouCoins(); // Sauvegarder les PandouCoins
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -108,36 +116,32 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
-    private void loadFragment(Fragment fragment) {
-        // Vérifiez si le fragment actuel est différent du nouveau fragment
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (currentFragment != null && currentFragment.getClass().equals(fragment.getClass())) {
-            return; // Ne chargez pas un fragment déjà affiché
-        }
+    /*public void updatePandouCoins(int coinsToAdd) {
+        // Récupère les PandouCoins actuels
+        SharedPreferences sharedPreferences = getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
+        int currentPandouCoins = sharedPreferences.getInt("PANDOU_COINS", 0);
 
-        // Remplacez le fragment actuel par le nouveau fragment
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
-    }
+        // Ajoute les nouveaux PandouCoins
+        int newPandouCoins = currentPandouCoins + coinsToAdd;
 
+        // Sauvegarde les PandouCoins mis à jour
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("PANDOU_COINS", newPandouCoins);
+        editor.apply();
 
-    // Méthode pour mettre à jour l'affichage des coins
-    private void updatePandouCoinsDisplay() {
-        pandouCoinsText.setText("          : " + pandouCoins);
-    }
+        // Log ou autre action si nécessaire
+        Log.d("MainActivity", "PandouCoins mis à jour : " + newPandouCoins);
+    }*/
 
     // Méthode pour ajouter des coins
-    public void addPandouCoins(int amount) {
+    /*public void addPandouCoins(int amount) {
         pandouCoins += amount;
-        updatePandouCoinsDisplay();
-    }
+        savePandouCoins();
+    }*/
 
-    public void savePandouCoins(int coins) {
-        SharedPreferences prefs = getSharedPreferences("pandouland_prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("pandouCoins", coins);
+    public void savePandouCoins() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(COINS_KEY, pandouCoins);
         editor.apply(); // Sauvegarde de façon asynchrone
     }
 
@@ -148,8 +152,32 @@ public class MainActivity extends AppCompatActivity {
     public void setPandouCoins(int coins) {
         pandouCoins = coins;
         sharedPreferences.edit().putInt(COINS_KEY, pandouCoins).apply();
-        updatePandouCoinsDisplay();
+        savePandouCoins();
     }
+
+    public interface OnPandouCoinsChangeListener {
+        void onPandouCoinsChanged(int newCoins);
+    }
+
+    private OnPandouCoinsChangeListener pandouCoinsListener;
+
+    public void setOnPandouCoinsChangeListener(OnPandouCoinsChangeListener listener) {
+        this.pandouCoinsListener = listener;
+    }
+
+    public void addPandouCoins(int coins) {
+        pandouCoins += coins;
+        SharedPreferences sharedPreferences = getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("PANDOU_COINS", pandouCoins);
+        editor.apply();
+
+        // Notifie le listener
+        if (pandouCoinsListener != null) {
+            pandouCoinsListener.onPandouCoinsChanged(pandouCoins);
+        }
+    }
+
 
 
     @Override
@@ -165,8 +193,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("pandouCoins", pandouCoins);
             editor.apply();
 
-            updatePandouCoinsDisplay();
-            savePandouCoins(pandouCoins);
+            savePandouCoins();
         }
     }
 
