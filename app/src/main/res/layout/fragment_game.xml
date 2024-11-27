@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.game.GameFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- FrameLayout pour superposer les images -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="56dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Image de fond (décor) -->
+            <ImageView
+                android:id="@+id/backgroundImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/background_minecraft"
+                android:scaleType="centerCrop"
+                android:contentDescription="Décor" />
+
+            <!-- Image du personnage (panda) -->
+            <ImageView
+                android:id="@+id/pandaImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/redpanda_happy"
+                android:layout_gravity="center"
+                android:contentDescription="Panda roux heureux" />
+
+            <TextView
+                android:id="@+id/pandouCoinsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="         : 0"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:padding="16dp" />
+
+            <ImageView
+                android:id="@+id/coinIcon"
+                android:layout_width="50dp"
+                android:layout_height="53dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="Icône d'argent"
+                android:src="@drawable/icon_coin" />
+
+            <ImageView
+                android:id="@+id/inventoryButton"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Icône d'inventaire'"
+                android:src="@drawable/icon_backpack" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Le panda roux est en bonne forme !"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:padding="16dp" />
+
+        <!-- Barre de progression avec icône (faim) -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <ProgressBar
+                android:id="@+id/hungerBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progressDrawable="@drawable/progress_bar"
+                android:layout_marginTop="16dp" />
+
+            <ImageView
+                android:id="@+id/hungerIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_food"
+                android:contentDescription="Icône de faim" />
+        </RelativeLayout>
+
+        <!-- Barre de progression avec icône (énergie) -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <ProgressBar
+                android:id="@+id/energyBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progressDrawable="@drawable/progress_bar"
+                android:layout_marginTop="16dp"/>
+
+            <ImageView
+                android:id="@+id/energyIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_energy"
+                android:contentDescription="Icône d'énergie" />
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/happinessBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_bar"
+            android:layout_marginTop="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jouer"
+                android:textSize="30sp"
+                android:padding="20dp"
+                android:backgroundTint="#FF5722"
+                android:layout_marginTop="0dp" />
+
+            <Button
+                android:id="@+id/sleepButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dormir" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

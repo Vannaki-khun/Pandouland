@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/nav_healthcare"
+        android:icon="@drawable/ic_healthcare"
+        android:title="Healthcare"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_game"
+        android:icon="@drawable/ic_game"
+        android:title="Game"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="Calendar"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_budget"
+        android:icon="@drawable/ic_budget"
+        android:title="Budget"
+        app:showAsAction="ifRoom" />
+</menu>
