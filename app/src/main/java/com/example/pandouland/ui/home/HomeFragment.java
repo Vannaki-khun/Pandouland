@@ -82,6 +82,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             // Demande la permission si elle n'est pas accordée
             requestPermissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION);
         }
+        
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         // Ajouter un listener pour détecter un appui court
         gifImageView.setOnClickListener(view -> {
             // Afficher un Toast avec le message "Hello"
-            Toast.makeText(requireContext(), "Coucou Alex", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Coucou M. Benabou", Toast.LENGTH_SHORT).show();
         });
 
         // Initialiser le SensorManager
@@ -215,8 +216,10 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         translations.put("mist", "brume");
         translations.put("overcast clouds", "nuages couverts");
         translations.put("light rain", "pluie légère");
+        translations.put("light intensity drizzle", "bruine de faible intensité");
         translations.put("heavy rain", "pluie forte");
         translations.put("moderate rain", "pluie modérée");
+
 
         // Retourne la traduction ou l'original si non trouvé
         return translations.getOrDefault(description, description);

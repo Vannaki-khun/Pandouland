@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="android.permission.ACTIVITY_RECOGNITION"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -19,7 +21,7 @@
         android:fontFamily="serif"
         android:textColor="@android:color/white"
         android:layout_marginBottom="8dp"
-        android:text="9:30" />
+        android:text="" />
 
     <!-- Température -->
     <TextView
@@ -31,7 +33,7 @@
         android:fontFamily="serif"
         android:textColor="@android:color/white"
         android:layout_marginBottom="4dp"
-        android:text="18°" />
+        android:text="" />
 
     <!-- Conditions météo -->
     <TextView
@@ -44,7 +46,7 @@
         android:fontFamily="serif"
         android:textColor="@android:color/white"
         android:layout_marginBottom="10dp"
-        android:text="NUAGEUX" />
+        android:text="" />
 
     <!-- Nombre de pas -->
     <TextView
@@ -69,7 +71,7 @@
         android:layout_height="180dp"
         android:src="@drawable/hello"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="137dp"
         />
 
 </LinearLayout>

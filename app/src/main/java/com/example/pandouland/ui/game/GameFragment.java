@@ -130,8 +130,9 @@ public class GameFragment extends Fragment {
                 playWithPanda();
 
                 // Rediriger vers l'activité de jeu
-                Intent gameIntent = new Intent(requireContext(), GameActivity.class);
-                startActivityForResult(gameIntent, GAME_REQUEST_CODE);
+                Intent intent = new Intent(getActivity(), GameActivity.class);
+                intent.putExtra(GameActivity.GAME_TYPE_KEY, GameActivity.GAME_TYPE_CATCH);
+                startActivity(intent);
             }
         });
 
@@ -166,7 +167,9 @@ public class GameFragment extends Fragment {
                 Intent FlappyGameintent = new Intent(getActivity(), GameActivity.class);
                 startActivity(FlappyGameintent);
 
-                //startGameJump();
+                Intent intent = new Intent(getActivity(), GameActivity.class);
+                intent.putExtra(GameActivity.GAME_TYPE_KEY, GameActivity.GAME_TYPE_FLAPPY);
+                startActivity(intent);
             }
         });
 
